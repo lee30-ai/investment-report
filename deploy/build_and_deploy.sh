@@ -26,10 +26,10 @@ gcloud run jobs deploy $JOB_NAME \
   --memory=512Mi \
   --cpu=1
 
-echo "=== Cloud Scheduler 설정 (매일 오전 7시 KST) ==="
+echo "=== Cloud Scheduler 설정 (오전 7시~오후 10시, 2시간 간격 KST) ==="
 gcloud scheduler jobs create http ${JOB_NAME}-scheduler \
   --location=$REGION \
-  --schedule="0 7 * * *" \
+  --schedule="0 7-22/2 * * *" \
   --time-zone="Asia/Seoul" \
   --uri="https://${REGION}-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/${PROJECT_ID}/jobs/${JOB_NAME}:run" \
   --message-body="" \
@@ -37,12 +37,12 @@ gcloud scheduler jobs create http ${JOB_NAME}-scheduler \
   2>/dev/null && echo "스케줄러 생성 완료" || \
   gcloud scheduler jobs update http ${JOB_NAME}-scheduler \
     --location=$REGION \
-    --schedule="0 7 * * *" \
+    --schedule="0 7-22/2 * * *" \
     --time-zone="Asia/Seoul" && echo "스케줄러 업데이트 완료"
 
 echo ""
 echo "=== 배포 완료 ==="
-echo "매일 오전 7시(KST) 자동 실행됩니다"
+echo "오전 7시~오후 10시, 2시간 간격(KST) 자동 실행됩니다 (7,9,11,13,15,17,19,21시)"
 echo ""
 echo "수동 실행:"
 echo "  gcloud run jobs execute ${JOB_NAME} --region=${REGION}"
