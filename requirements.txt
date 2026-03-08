@@ -1,0 +1,11 @@
+# Data fetching
+yfinance>=0.2.36
+pandas>=2.0.0
+requests>=2.31.0
+feedparser>=6.0.11
+
+# Environment management
+python-dotenv>=1.0.0
+
+# Utilities
+pytz>=2024.1
