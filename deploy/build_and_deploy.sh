@@ -9,10 +9,11 @@ IMAGE="asia-northeast3-docker.pkg.dev/${PROJECT_ID}/investment-report/app"
 JOB_NAME="investment-report"
 SA_EMAIL="investment-report-sa@${PROJECT_ID}.iam.gserviceaccount.com"
 
-echo "=== Docker 이미지 빌드 및 푸시 ==="
-gcloud auth configure-docker asia-northeast3-docker.pkg.dev --quiet
-docker build -t "${IMAGE}:latest" .
-docker push "${IMAGE}:latest"
+echo "=== Cloud Build로 이미지 빌드 및 푸시 (로컬 Docker 불필요) ==="
+gcloud builds submit \
+  --tag="${IMAGE}:latest" \
+  --project=$PROJECT_ID \
+  .
 
 echo "=== Cloud Run Job 배포 ==="
 gcloud run jobs deploy $JOB_NAME \

@@ -38,6 +38,12 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:${SA_EMAIL}" \
   --role="roles/secretmanager.secretAccessor"
 
+# Cloud Build 서비스 계정에 Artifact Registry 쓰기 권한 부여
+PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format="value(projectNumber)")
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:${PROJECT_NUMBER}@cloudbuild.gserviceaccount.com" \
+  --role="roles/artifactregistry.writer"
+
 echo "=== Telegram 시크릿 저장 ==="
 echo -n "${TELEGRAM_BOT_TOKEN}" | gcloud secrets create TELEGRAM_BOT_TOKEN \
   --data-file=- --replication-policy=automatic 2>/dev/null || \
