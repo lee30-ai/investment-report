@@ -38,6 +38,11 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:${SA_EMAIL}" \
   --role="roles/secretmanager.secretAccessor"
 
+# Cloud Run Job 실행 권한 (Cloud Scheduler가 Job을 트리거하기 위해 필요)
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+  --member="serviceAccount:${SA_EMAIL}" \
+  --role="roles/run.invoker"
+
 # Cloud Build 서비스 계정에 Artifact Registry 쓰기 권한 부여
 PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format="value(projectNumber)")
 gcloud projects add-iam-policy-binding $PROJECT_ID \
