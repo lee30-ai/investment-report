@@ -341,8 +341,9 @@ def analyze(data: dict) -> str:
 
     # ── 리포트 본문 ────────────────────────────────────────────────────────────
     lines = []
+    time_str = now.strftime("%H:%M")
     lines.append(f"# 📊 글로벌 투자 데일리 리포트")
-    lines.append(f"**{date_str} (KST)** | 자동 생성")
+    lines.append(f"**{date_str} {time_str} KST** | 자동 생성")
     lines.append("")
     lines.append("---")
     lines.append("")
@@ -438,10 +439,10 @@ def analyze(data: dict) -> str:
 
 
 def save_report(content: str) -> str:
-    """리포트를 reports/YYYYMMDD_report.md 로 저장하고 경로를 반환합니다."""
+    """리포트를 reports/YYYYMMDD_HHMM_report.md 로 저장하고 경로를 반환합니다."""
     os.makedirs(REPORTS_DIR, exist_ok=True)
     kst = pytz.timezone("Asia/Seoul")
-    file_date = datetime.now(kst).strftime("%Y%m%d")
+    file_date = datetime.now(kst).strftime("%Y%m%d_%H%M")
     path = os.path.join(REPORTS_DIR, f"{file_date}_report.md")
     with open(path, "w", encoding="utf-8") as f:
         f.write(content)
